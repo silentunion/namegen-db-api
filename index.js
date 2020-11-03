@@ -20,7 +20,11 @@ let users = [
 ];
 
 router.get('/', ctx => {
-    ctx.body = users[ctx.params.id];
+    ctx.body = users;
+});
+
+router.post('/user/:id', ctx => {
+    ctx.body = Object.assign(users[ctx.params.id], ctx.request.body);
 });
 
 app.use(router.allowedMethods())
