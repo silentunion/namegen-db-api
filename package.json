@@ -1,0 +1,13 @@
+{
+  "name": "namegen-db-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/silentunion/namegen-db-api.git",
+  "author": "silentunion <milliner@unbc.ca>",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-router": "^10.0.0"
+  }
+}
