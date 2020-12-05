@@ -1,3 +1,6 @@
+const enforceNodePath = require('enforce-node-path');
+enforceNodePath(__dirname);
+
 const Koa = require('koa');
 const Router = require('koa-router');
 
