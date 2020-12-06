@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const config = require('./config.json');
+const config = require('./config');
 
 exports.start = async function () {
     const host = config.get('PGHOST');
