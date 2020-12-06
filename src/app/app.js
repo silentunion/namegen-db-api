@@ -15,8 +15,8 @@ exports.start = async function () {
     try {
         await db.start();
         console.log('Database connected');
-        this.server = await app.listen(3000);
-        console.log('Listening on port 3000');
+        this.server = await app.listen(8666);
+        console.log('Listening on port 8666');
     } catch (error) {
         console.log(error);
     }
