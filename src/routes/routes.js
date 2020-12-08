@@ -6,7 +6,7 @@ const router = Router();
 router.get('/', async ctx => { ctx.status = 200; });
 
 router.get('/letters', async ctx => {
-    ctx.body = await database.query('SELECT letter FROM ng.letters')
+    ctx.body = await database.query('SELECT * FROM ng.letters')
         .then(c => c.rows)
         });
 
