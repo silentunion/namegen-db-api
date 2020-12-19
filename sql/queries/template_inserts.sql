@@ -12,26 +12,45 @@ INSERT INTO namegen.cluster (cluster)
 DO $$
 BEGIN 
 	IF NOT EXISTS 
-        (SELECT letter, cluster, syllable
-        FROM ng.parts
-        FULL JOIN ng.letters USING(part_id)
-        FULL JOIN ng.clusters USING(part_id)
-        FULL JOIN ng.syllables USING(part_id)
-        WHERE letter='${new_part}' OR cluster='${new_part}' OR syllable='${new_part}')
+        (SELECT letter, cluster, syllable, stem, name
+        FROM namegen.parts
+        FULL JOIN namegen.letters USING(part_id)
+        FULL JOIN namegen.clusters USING(part_id)
+        FULL JOIN namegen.syllables USING(part_id)
+        FULL JOIN namegen.stems USING(part_id)
+        FULL JOIN namegen.names USING(part_id)
+        WHERE letter ='${new_part}'
+           OR cluster ='${new_part}'
+           OR syllable ='${new_part}'
+           OR stem ='${new_part}'
+           OR name ='${new_part}')
     THEN
-		INSERT INTO ng.parts (part_id) VALUES (new_id);
-        INSERT INTO ng.syllables (part_id, syllable)
-        VALUES ((SELECT MAX(part_id) FROM ng.parts), '${new_part}');
-    ELSE IF NOT EXISTS
-        (SELECT letter
-         FROM ng.letters
-         WHERE letter='a')
-    THEN INSERT INTO value
+		INSERT INTO namegen.parts (part_id) VALUES DEFAULT
+        INSERT INTO namegen.'${part_table}' (part_id, '${part_column}')
+            VALUES((SELECT MAX(part_id) FROM namegen.parts), '${new_part}')
+    ELSE
+    IF NOT EXISTS
+        (SELECT '${part_column}'
+         FROM namegen.'${part_table}'
+         WHERE '${part_column}'='${new_part}')
+    THEN
+        INSERT INTO namegen.'${part_table}' (part_id, '${part_column}')
+            VALUES((SELECT part_id FROM namegen.parts
+                    JOIN namegen.letters USING(part_id)
+                    JOIN namegen.clusters USING(part_id)
+                    JOIN namegen.syllables USING(part_id)
+                    JOIN namegen.stems USING(part_id)
+                    JOIN namegen.names USING(part_id)
+                    WHERE letter ='${new_part}'
+                        OR cluster ='${new_part}'
+                        OR syllable ='${new_part}'
+                        OR stem ='${new_part}'
+                        OR name ='${new_part}'), '${new_part}')
 	END IF;
 END $$
 
 
--- Template Collection Insert --
+-- Template Collection Insert (Testing and Working) --
 INSERT INTO namegen.languages (language)
     SELECT '{language}'
     WHERE NOT EXISTS (
@@ -49,5 +68,5 @@ INSERT INTO namegen.collections (lang_id, theme_id, collection)
            (SELECT theme_id FROM namegen.themes WHERE theme='{theme}'),
            '{collection}'
     WHERE NOT EXISTS (
-        SELECT 1 FROM namegen.collections WHERE collection='collection'
+        SELECT 1 FROM namegen.collections WHERE collection='{collection}'
     );
