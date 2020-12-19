@@ -40,3 +40,9 @@ INSERT INTO namegen.collections (lang_id, theme_id, collection)
     WHERE NOT EXISTS (
         SELECT 1 FROM namegen.collections WHERE collection='None'
     );
+
+INSERT INTO namegen.properties (property)
+    SELECT 'is_vowel'
+    WHERE NOT EXISTS (
+        SELECT 1 FROM namegen.properties WHERE property='is_vowel'
+    );
