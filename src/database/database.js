@@ -8,7 +8,7 @@ exports.start = async function () {
     const port = config.get('PGPORT');
     const user = config.get('PGUSER');
     const password = config.get('PGPASSWORD');
-    await migrate.run({ host, database, port, user, password })
+    await migrate.run({ host, database, port, user, password });
     this.pool = new Pool({ host, database, port, user, password });
 };
 
