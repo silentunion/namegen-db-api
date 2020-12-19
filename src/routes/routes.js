@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const bodyParser = require('koa-body')();
 
 const database = require('./../database/database');
-const insert_parts = require('./../inserts/insert_parts')
+const insert_parts = require('./../inserts/inserts')
 
 const router = Router();
 
