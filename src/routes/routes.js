@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 const bodyParser = require('koa-body')();
+
 const database = require('./../database/database');
+const insert_parts = require('./../inserts/insert_parts')
 
 const router = Router();
 
@@ -21,7 +23,8 @@ router.get('/letters/freq', async ctx => {
     });
 
 router.post('/parts', bodyParser, async ctx => {
-    console.log(ctx.request.body);
+    const ack = await insert_parts.insert_parts(ctx.request.body);
+    ctx.body = ack;
     });
         
 
