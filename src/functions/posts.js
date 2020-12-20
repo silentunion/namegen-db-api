@@ -8,7 +8,7 @@ exports.insert_parts = async function (req) {
     for (r of req) {
         let new_part = r.new_part;
         let part_type = r.part_type;
-        let part_table = r.part_table;
+        let part_table = 'part_' + part_type + 's';
 
         const part_exists = await selects.partExists(new_part);
 
