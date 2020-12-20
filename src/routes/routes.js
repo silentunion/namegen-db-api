@@ -1,5 +1,8 @@
 const Router = require('koa-router');
+const bodyParser = require('koa-body')();
+
 const database = require('./../database/database');
+const posts = require('./../functions/posts')
 
 const router = Router();
 
@@ -17,6 +20,11 @@ router.get('/letters/freq', async ctx => {
         FROM ng.letters
         JOIN ng.statistics USING (part_id);`)
     .then(c => c.rows)
+    });
+
+router.post('/parts', bodyParser, async ctx => {
+    const ack = await posts.insert_parts(ctx.request.body);
+    ctx.body = ack;
     });
         
 
