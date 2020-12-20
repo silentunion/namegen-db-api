@@ -32,7 +32,7 @@ exports.partTypeExists = async function (new_part, part_type, part_table) {
         FROM namegen.${part_table}
         WHERE ${part_type} = '${new_part}';`);
         
-    if (part__type_exists.rows.length === 1) {
+    if (part_type_exists.rows.length === 1) {
         return part_type_exists.rows;
     } else {
         return undefined;

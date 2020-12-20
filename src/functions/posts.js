@@ -26,6 +26,7 @@ exports.insert_parts = async function (req) {
                 await inserts.insert_part_type(part_id, new_part, part_type, part_table);
 
                 console.log('Inserted new part');
+            };
         };
 
     const ack = 'woohoo'
