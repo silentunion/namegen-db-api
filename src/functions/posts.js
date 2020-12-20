@@ -4,20 +4,15 @@ const inserts = require('../queries/inserts');
 
 exports.insert_parts = async function (req) {    
     var num_inserts = 0;
-    console.log(req);
 
     for (r of req) {
-        console.log(r);
-
-        let part, category, properties;
-        ({ part, category, ...properties } = r);
-
-        console.log(part, category, properties);
+        let part, category, collection, properties;
+        ({ part, category, collection, properties } = r);
 
         const part_exists = await selects.partExists(part);
 
         if (!part_exists) {
-            await inserts.insert_new_part(part, category);
+            await inserts.insert_new_part(part, category, collection, properties);
             console.log('New part inserted');
 
         } else {

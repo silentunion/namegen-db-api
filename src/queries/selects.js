@@ -61,7 +61,7 @@ exports.getCategoryId = async function (category_name) {
 exports.getCollectionID = async function (collection_name) {
     const col = await database.query(
         `SELECT col_id FROM namegen.collections
-         WHERE collection=${collection_name};`);
+         WHERE collection='${collection_name}';`);
         
     if (col.rows.length === 1) {
         return col.rows[0].col_id;
@@ -73,7 +73,7 @@ exports.getCollectionID = async function (collection_name) {
 exports.getPropertyID = async function (property_name) {
     const prop = await database.query(
         `SELECT prop_id FROM namegen.properties
-         WHERE property=${property_name};`);
+         WHERE property='${property_name}';`);
         
     if (prop.rows.length === 1) {
         return prop.rows[0].prop_id;
@@ -83,11 +83,18 @@ exports.getPropertyID = async function (property_name) {
 };
 
 exports.getCollectionPartID = async function (collection_name, part_name) {
-    const cp_id = await database.query(
+    const cp = await database.query(
         `SELECT cp_id FROM namegen.collection_parts
          JOIN namegen.collections USING(col_id)
          JOIN namegen.parts USING(part_id)
          WHERE collection = '${collection_name}' AND
-               part =       '${part_name}';`
-    );
+               part =       '${part_name}';`);
+
+    console.log(cp);
+
+    if (cp.rows.length === 1) {
+        return cp.rows[0].cp_id;
+    } else {
+        return undefined;
+    };
 };
