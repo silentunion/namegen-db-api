@@ -1,6 +1,6 @@
 const database = require('../database/database');
 
-// Queries to see if a part exists and returns the part id
+// Queries to see if a part exists and returns the row
 exports.partExists = async function (new_part) {
     const part_exists = await database.query(`
         SELECT *
@@ -20,6 +20,20 @@ exports.partExists = async function (new_part) {
     
     if (part_exists.rows.length === 1) {
         return part_exists.rows;
+    } else {
+        return undefined;
+    };
+};
+
+// Queries to see if the specific part type exists and returns the row
+exports.partTypeExists = async function (new_part, part_type, part_table) {
+    const part_type_exists = await database.query(
+    `SELECT ${part_type}
+        FROM namegen.${part_table}
+        WHERE ${part_type} = '${new_part}';`);
+        
+    if (part__type_exists.rows.length === 1) {
+        return part_type_exists.rows;
     } else {
         return undefined;
     };
