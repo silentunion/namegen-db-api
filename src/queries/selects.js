@@ -90,8 +90,6 @@ exports.getCollectionPartID = async function (collection_name, part_name) {
          WHERE collection = '${collection_name}' AND
                part =       '${part_name}';`);
 
-    console.log(cp);
-
     if (cp.rows.length === 1) {
         return cp.rows[0].cp_id;
     } else {
