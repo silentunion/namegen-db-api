@@ -86,11 +86,6 @@ exports.getCollectionPartID = async function (collection_name, part_name) {
         `SELECT cp_id FROM namegen.collection_parts
          JOIN namegen.collections USING(col_id)
          JOIN namegen.parts USING(part_id)
-         JOIN namegen.part_letters USING(part_id)
-         JOIN namegen.part_clusters USING(part_id)
-         JOIN namegen.part_syllables USING(part_id)
-         JOIN namegen.part_stems USING(part_id)
-         JOIN namegen.part_names USING(part_id)
          WHERE collection = '${collection_name}' AND
                part =       '${part_name}';`
     );
