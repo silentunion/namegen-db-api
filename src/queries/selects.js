@@ -38,3 +38,15 @@ exports.partTypeExists = async function (new_part, part_type, part_table) {
         return undefined;
     };
 };
+
+exports.getCollectionID = async function (collection_name) {
+    const col_id = await database.query(
+    `SELECT col_id FROM namegen.collections
+    WHERE collection=${collection_name};`);
+        
+    if (col.rows.length === 1) {
+        return col_id.rows[0].col_id;
+    } else {
+        return undefined;
+    };
+};
