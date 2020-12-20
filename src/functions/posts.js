@@ -14,65 +14,19 @@ exports.insert_parts = async function (req) {
 
         // if part does not exist at all
         if(!Array.isArray(part_exists) || !part_exists.length){
-            inserts.insert_new_part(new_part, part_type, part_table);
+
+            await inserts.insert_new_part(new_part, part_type, part_table);
+
         } else {
             const part_type_exists = await selects.partTypeExists(new_part, part_type, part_table);
             // if part exists but part type does not
             if (!Array.isArray(part_type_exists) || !part_type_exists.length){
                 const part_id = part_type_exists[0].part_id
                 
-                console.log('Part ID: ', part_exists[0].part_id);
-        }
-            
-            !Array.isArray(part_exists) || !part_exists.length){
-            console.log('Part ID: ', part_exists[0].part_id);
-        }
+                await inserts.insert_part_type(part_id, new_part, part_type, part_table);
 
-    //     await database.query(
-    //         `DO $$
-    //         BEGIN 
-    //             IF NOT EXISTS 
-    //                 (SELECT *
-    //                     FROM namegen.parts
-    //                     FULL JOIN namegen.part_letters USING(part_id)
-    //                     FULL JOIN namegen.part_clusters USING(part_id)
-    //                     FULL JOIN namegen.part_syllables USING(part_id)
-    //                     FULL JOIN namegen.part_stems USING(part_id)
-    //                     FULL JOIN namegen.part_names USING(part_id)
-    //                     WHERE letter = '${new_part}'
-    //                       OR cluster = '${new_part}'
-    //                      OR syllable = '${new_part}'
-    //                          OR stem = '${new_part}'
-    //                          OR name = '${new_part}')
-    //             THEN
-    //                 WITH new_part_id AS (
-    //                     INSERT INTO namegen.parts (part_id) VALUES (DEFAULT)
-    //                     RETURNING part_id
-    //                 )
-    //                 INSERT INTO namegen.${part_table} (part_id, ${part_type})
-    //                     VALUES((SELECT part_id FROM new_part_id), '${new_part}');
-    //             ELSIF NOT EXISTS
-    //                 (SELECT ${part_type}
-    //                 FROM namegen.${part_table}
-    //                 WHERE ${part_type} = '${new_part}')
-    //             THEN
-    //                 INSERT INTO namegen.${part_table} (part_id, ${part_type})
-    //                     VALUES((SELECT part_id
-    //                         FROM namegen.parts
-    //                         FULL JOIN namegen.part_letters USING(part_id)
-    //                         FULL JOIN namegen.part_clusters USING(part_id)
-    //                         FULL JOIN namegen.part_syllables USING(part_id)
-    //                         FULL JOIN namegen.part_stems USING(part_id)
-    //                         FULL JOIN namegen.part_names USING(part_id)
-    //                         WHERE letter = '${new_part}'
-    //                           OR cluster = '${new_part}'
-    //                          OR syllable = '${new_part}'
-    //                              OR stem = '${new_part}'
-    //                              OR name = '${new_part}'), '${new_part}');
-    //             END IF;
-    //         END $$`
-    //     )
-    // };
+                console.log('Inserted new part');
+        };
 
     const ack = 'woohoo'
     return ack;
