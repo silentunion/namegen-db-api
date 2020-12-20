@@ -5,6 +5,13 @@ SELECT setval('namegen.parts_part_id_seq',
                ELSE (SELECT MAX(part_id) FROM namegen.parts) + 1
                END), FALSE);
 
+-- Table: CATEGORIES --
+SELECT setval('namegen.categories_cat_id_seq',
+              (SELECT CASE WHEN (SELECT MAX(cat_id) FROM namegen.categories) IS NULL
+               THEN 1
+               ELSE (SELECT MAX(cat_id) FROM namegen.categories) + 1
+               END), FALSE);
+
 -- Table: LANGUAGES --
 SELECT setval('namegen.languages_lang_id_seq',
               (SELECT CASE WHEN (SELECT MAX(lang_id) FROM namegen.languages) IS NULL
@@ -33,6 +40,13 @@ SELECT setval('namegen.properties_prop_id_seq',
                ELSE (SELECT MAX(prop_id) FROM namegen.properties) + 1
                END), FALSE);
 
+-- Table: PART_CATEGORIES --
+SELECT setval('namegen.part_categories_pc_id_seq',
+              (SELECT CASE WHEN (SELECT MAX(pc_id) FROM namegen.part_categories) IS NULL
+               THEN 1
+               ELSE (SELECT MAX(pc_id) FROM namegen.part_categories) + 1
+               END), FALSE);
+
 -- Table: COLLECTION_PARTS --
 SELECT setval('namegen.collection_parts_cp_id_seq',
               (SELECT CASE WHEN (SELECT MAX(cp_id) FROM namegen.collection_parts) IS NULL
@@ -52,18 +66,4 @@ SELECT setval('namegen.part_statistics_ps_id_seq',
               (SELECT CASE WHEN (SELECT MAX(ps_id) FROM namegen.part_statistics) IS NULL
                THEN 1
                ELSE (SELECT MAX(ps_id) FROM namegen.part_statistics) + 1
-               END), FALSE);
-
--- Table: CATEGORIES --
-SELECT setval('namegen.categories_cat_id_seq',
-              (SELECT CASE WHEN (SELECT MAX(cat_id) FROM namegen.categories) IS NULL
-               THEN 1
-               ELSE (SELECT MAX(cat_id) FROM namegen.categories) + 1
-               END), FALSE);
-
--- Table: PART_CATEGORIES --
-SELECT setval('namegen.part_categories_pc_id_seq',
-              (SELECT CASE WHEN (SELECT MAX(pc_id) FROM namegen.part_categories) IS NULL
-               THEN 1
-               ELSE (SELECT MAX(pc_id) FROM namegen.part_categories) + 1
                END), FALSE);
