@@ -26,4 +26,8 @@ exports.insert_collection_parts = async function (collection_name, part_name) {
         `INSERT INTO namegen.collection_parts (col_id, part_id)
          VALUES (${col_id}, ${part_id});`
     );
-;}
+};
+
+exports.insert_property = async function (collection_name, part_name, property_name) {
+
+}
