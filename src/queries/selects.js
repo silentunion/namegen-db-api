@@ -42,17 +42,7 @@ exports.partTypeExists = async function (new_part, part_type, part_table) {
 exports.getPartID = async function (part_name) {
     const part = await database.query(
         `SELECT part_id FROM namegen.parts
-         JOIN namegen.part_letters USING(part_id)
-         JOIN namegen.part_clusters USING(part_id)
-         JOIN namegen.part_syllables USING(part_id)
-         JOIN namegen.part_stems USING(part_id)
-         JOIN namegen.part_names USING(part_id)
-         WHERE 
-            letter =   '${part_name}' OR
-            cluster =  '${part_name}' OR
-            syllable = '${part_name}' OR
-            stem =     '${part_name}' OR
-            name =     '${part_name}' ;`);
+         WHERE part = '${part_name}';`);
 
     if (part.rows.length === 1) {
         return part.rows[0].part_id;
