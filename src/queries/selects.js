@@ -46,7 +46,7 @@ exports.getPartID = async function (part_name) {
 };
 
 exports.getCategoryId = async function (category_name) {
-    const cat = await database.quert(
+    const cat = await database.query(
         `SELECT cat_id FROM namegen.categories
          WHERE category = '${category_name}';`);
 

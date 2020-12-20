@@ -2,11 +2,12 @@ const database = require('../database/database');
 const selects = require('./selects');
 
 // Inserts new part_id and new part
-exports.insert_new_part = async function (new_part, category) {
+exports.insert_new_part = async function (part, category) {
     const cat_id = await selects.getCategoryId(category);
     const part_id = await database.query(`
-        INSERT INTO namegen.parts (part) VALUES ('${new_part}')
-            RETURNING part_id;`);
+        INSERT INTO namegen.parts (part) VALUES ('${part}')
+            RETURNING part_id;`)
+        .then(res => res.rows[0].part_id);
 
     await database.query(`
         INSERT INTO namegen.part_categories (part_id, cat_id)
