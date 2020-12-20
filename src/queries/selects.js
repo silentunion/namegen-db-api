@@ -3,7 +3,7 @@ const database = require('../database/database');
 // Queries to see if a part exists and returns the row
 exports.partExists = async function (part) {
     const part_exists = await database.query(`
-        SELECT * FROM namegen.part
+        SELECT * FROM namegen.parts
         WHERE part = '${part}';`);
 
     if (part_exists.rows.length === 1) {
@@ -11,22 +11,26 @@ exports.partExists = async function (part) {
     } else if (part_exists.rows.length === 0) {
         return false;
     } else {
-        throw "Too many rows were discovered. Check database for duplicates"
+        throw "Too many rows were discovered in parts. Check database for duplicates"
     };
 };
 
 // Queries to see if the specific part type exists and returns the row
-exports.partTypeExists = async function (new_part, part_type, part_table) {
-    const part_type_exists = await database.query(
-    `SELECT ${part_type}
-        FROM namegen.${part_table}
-        WHERE ${part_type} = '${new_part}';`);
+exports.partTypeExists = async function (part, category) {
+    const part_type_exists = await database.query(`
+        SELECT * FROM namegen.parts
+        JOIN namegen.part_categories USING(part_id)
+        JOIN namegen.categories USING(cat_id)
+        WHERE part='${part}'
+        AND category='${category}';`);
         
-    if (part_type_exists.rows.length === 1) {
-        return part_type_exists.rows;
-    } else {
-        return undefined;
-    };
+        if (part_type_exists.rows.length === 1) {
+            return true;
+        } else if (part_type_exists.rows.length === 0) {
+            return false;
+        } else {
+            throw "Too many rows were discovered in part_types. Check database for duplicates"
+        };
 };
 
 exports.getPartID = async function (part_name) {
