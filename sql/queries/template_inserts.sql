@@ -70,3 +70,10 @@ INSERT INTO namegen.collections (lang_id, theme_id, collection)
     WHERE NOT EXISTS (
         SELECT 1 FROM namegen.collections WHERE collection='{collection}'
     );
+
+INSERT INTO namegen.categories (category)
+    VALUES ('letters'),
+           ('clusters'),
+           ('syllables'),
+           ('stems'),
+           ('names');
