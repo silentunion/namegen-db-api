@@ -22,15 +22,16 @@ exports.partTypeExists = async function (part, category) {
         JOIN namegen.part_categories USING(part_id)
         JOIN namegen.categories USING(cat_id)
         WHERE part='${part}'
-        AND category='${category}';`);
-        
-        if (part_type_exists.rows.length === 1) {
-            return true;
-        } else if (part_type_exists.rows.length === 0) {
-            return false;
-        } else {
-            throw "Too many rows were discovered in part_types. Check database for duplicates"
-        };
+        AND category='${category}';`)
+        .then(res => res.rows);
+
+    if (part_type_exists.length === 1) {
+        return true;
+    } else if (part_type_exists.length === 0) {
+        return false;
+    } else {
+        throw "Too many rows were discovered in part_types. Check database for duplicates"
+    };
 };
 
 exports.getPartID = async function (part_name) {
