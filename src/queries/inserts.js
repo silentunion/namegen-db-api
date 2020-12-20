@@ -2,20 +2,25 @@ const database = require('../database/database');
 const selects = require('./selects');
 
 // Inserts new part_id and new part
-exports.insert_new_part = async function (new_part, part_type, part_table) {
-    await database.query(
-        `WITH new_part_id AS (
-            INSERT INTO namegen.parts (part_id) VALUES (DEFAULT)
-            RETURNING part_id
-        )
-        INSERT INTO namegen.${part_table} (part_id, ${part_type})
-        VALUES((SELECT part_id FROM new_part_id), '${new_part}');`);
+exports.insert_new_part = async function (part, category) {
+    const cat_id = await selects.getCategoryId(category);
+    const part_id = await database.query(`
+        INSERT INTO namegen.parts (part) VALUES ('${part}')
+            RETURNING part_id;`)
+        .then(res => res.rows[0].part_id);
+
+    await database.query(`
+        INSERT INTO namegen.part_categories (part_id, cat_id)
+        VALUES(${part_id}, ${cat_id});`);
 };
 
-exports.insert_part_type = async function (part_id, new_part, part_type, part_table) {
+exports.add_category_to_part = async function (new_part, category) {
+    const cat_id = await selects.getCategoryId(category);
+    const part_id = await selects.getPartID(new_part);
+
     await database.query(
-        `INSERT INTO namegen.${part_table} (part_id, ${part_type})
-        VALUES(${part_id}, '${new_part}');`);
+        `INSERT INTO namegen.part_categories (part_id, cat_id)
+        VALUES(${part_id}, ${cat_id});`);
 };
 
 exports.insert_collection_parts = async function (collection_name, part_name) {
