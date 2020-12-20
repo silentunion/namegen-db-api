@@ -89,4 +89,4 @@ exports.getCollectionPartID = async function (collection_name, part_name) {
          WHERE collection = '${collection_name}' AND
                part =       '${part_name}';`
     );
-}
+};
