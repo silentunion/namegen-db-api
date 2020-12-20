@@ -17,3 +17,13 @@ exports.insert_part_type = async function (part_id, new_part, part_type, part_ta
         `INSERT INTO namegen.${part_table} (part_id, ${part_type})
         VALUES(${part_id}, '${new_part}');`);
 };
+
+exports.insert_collection_parts = async function (collection_name, part_name) {
+    const col_id = await selects.getCollectionID(collection_name);
+    const part_id = await selects.getPartID(part_name);
+
+    await database.query(
+        `INSERT INTO namegen.collection_parts (col_id, part_id)
+         VALUES (${col_id}, ${part_id});`
+    );
+;}
