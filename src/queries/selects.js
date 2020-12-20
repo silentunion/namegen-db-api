@@ -1,27 +1,17 @@
 const database = require('../database/database');
 
 // Queries to see if a part exists and returns the row
-exports.partExists = async function (new_part) {
+exports.partExists = async function (part) {
     const part_exists = await database.query(`
-        SELECT *
-            FROM namegen.parts
-            FULL JOIN namegen.part_letters USING(part_id)
-            FULL JOIN namegen.part_clusters USING(part_id)
-            FULL JOIN namegen.part_syllables USING(part_id)
-            FULL JOIN namegen.part_stems USING(part_id)
-            FULL JOIN namegen.part_names USING(part_id)
-            WHERE 
-                letter =   '${new_part}' OR
-                cluster =  '${new_part}' OR
-                syllable = '${new_part}' OR
-                stem =     '${new_part}' OR
-                name =     '${new_part}'
-        `);
-    
+        SELECT * FROM namegen.part
+        WHERE part = '${part}';`);
+
     if (part_exists.rows.length === 1) {
-        return part_exists.rows;
+        return true;
+    } else if (part_exists.rows.length === 0) {
+        return false;
     } else {
-        return undefined;
+        throw "Too many rows were discovered. Check database for duplicates"
     };
 };
 
