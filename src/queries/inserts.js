@@ -12,7 +12,7 @@ exports.insert_part = async function (part, category) {
     return part_id;
 };
 
-exports.add_part_to_category = async function (part, collection) {
+exports.add_part_to_category = async function (part, category, collection) {
     const col_id = await selects.getCollectionID(collection);
     const part_id = await selects.getPartID(part, category);
 

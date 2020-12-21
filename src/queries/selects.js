@@ -24,6 +24,22 @@ exports.partExists = async function (part, category=false) {
     };
 };
 
+exports.partExistsInCollection = async function (part, category, collection) {
+    const cp = await database.query(
+        `SELECT cp_id FROM namegen.collection_parts
+         JOIN namegen.collections USING(col_id)
+         JOIN namegen.parts USING(part_id)
+         WHERE part = '${part}'
+           AND category = '${category}'
+           AND collection = '${collection}';`);
+
+    if (cp.rows.length === 1) {
+        return cp.rows[0].cp_id;
+    } else {
+        return undefined;
+    };
+};
+
 exports.getPartID = async function (part_name, category) {
     const part = await database.query(
         `SELECT part_id FROM namegen.parts
