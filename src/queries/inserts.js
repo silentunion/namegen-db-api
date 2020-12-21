@@ -13,8 +13,8 @@ exports.insert_part = async function (part, category) {
 };
 
 exports.add_part_to_collection = async function (part, category, collection) {
-    const col_id = await selects.getCollectionID(collection);
-    const part_id = await selects.getPartID(part, category);
+    const col_id = await selects.getColIDFromCollection(collection);
+    const part_id = await selects.getPartIDFromPart(part, category);
 
     const cp_id = await database.query(`
         INSERT INTO namegen.collection_parts (col_id, part_id)
@@ -26,12 +26,12 @@ exports.add_part_to_collection = async function (part, category, collection) {
 };
 
 exports.apply_properties_to_part = async function (part, category, collection, properties) {
-    const cp_id = await selects.getCollectionPartID(part, category, collection);
+    const cp_id = await selects.getCPIDFromTables(part, category, collection);
     
     if (properties.length) {
         for (property of properties) {
-            let prop_id = await selects.getPropertyID(property);
-            let part_prop_exists = await selects.partPropertyExists(cp_id, prop_id);
+            let prop_id = await selects.getPropIDFromProperty(property);
+            let part_prop_exists = await selects.getPPIDFromIDs(cp_id, prop_id);
 
             if (!part_prop_exists) {
                 await database.query(`
