@@ -36,18 +36,6 @@ exports.getPartID = async function (part_name) {
     };
 };
 
-exports.getCategoryID = async function (category_name) {
-    const cat = await database.query(
-        `SELECT cat_id FROM namegen.categories
-         WHERE category = '${category_name}';`);
-
-    if (cat.rows.length === 1) {
-        return cat.rows[0].cat_id;
-    } else {
-        return undefined;
-    };
-};
-
 exports.getCollectionID = async function (collection_name) {
     const col = await database.query(
         `SELECT col_id FROM namegen.collections
