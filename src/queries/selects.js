@@ -2,75 +2,111 @@ const database = require('../database/database');
 
 // Queries to see if a part exists and returns a boolean
 exports.partExists = async function (part, category=false) {
-    let part_exists;
+    let exists;
    
     if (!category) {
-        part_exists = await database.query(`
+        exists = await database.query(`
             SELECT * FROM namegen.parts
             WHERE part = '${part}';`);
     } else {
-        part_exists = await database.query(`
+        exists = await database.query(`
             SELECT * FROM namegen.parts
             WHERE part = '${part}'
             AND category = '${category}';`);
     }
 
-    if (part_exists.rows.length === 1) {
+    if (exists.rows.length === 1) {
         return true;
-    } else if (part_exists.rows.length === 0) {
+    } else if (exists.rows.length === 0) {
         return false;
     } else {
         throw "Too many rows were discovered in parts. Check database for duplicates"
     };
 };
 
-exports.getPartID = async function (part_name, category) {
-    const part = await database.query(
-        `SELECT part_id FROM namegen.parts
-         WHERE part = '${part_name}'
-         AND category = '${category}';`);
-
-    if (part.rows.length === 1) {
-        return part.rows[0].part_id;
-    } else {
-        return undefined;
-    };
-};
-
-exports.getCollectionID = async function (collection_name) {
-    const col = await database.query(
-        `SELECT col_id FROM namegen.collections
-         WHERE collection='${collection_name}';`);
-        
-    if (col.rows.length === 1) {
-        return col.rows[0].col_id;
-    } else {
-        return undefined;
-    };
-};
-
-exports.getPropertyID = async function (property_name) {
-    const prop = await database.query(
-        `SELECT prop_id FROM namegen.properties
-         WHERE property='${property_name}';`);
-        
-    if (prop.rows.length === 1) {
-        return prop.rows[0].prop_id;
-    } else {
-        return undefined;
-    };
-};
-
-exports.getCollectionPartID = async function (collection_name, part_name) {
-    const cp = await database.query(
+exports.partExistsInCollection = async function (part, category, collection) {
+    const exists = await database.query(
         `SELECT cp_id FROM namegen.collection_parts
          JOIN namegen.collections USING(col_id)
          JOIN namegen.parts USING(part_id)
-         WHERE collection = '${collection_name}' AND
-               part =       '${part_name}';`);
+         WHERE part = '${part}'
+           AND category = '${category}'
+           AND collection = '${collection}';`);
 
-    if (cp.rows.length === 1) {
-        return cp.rows[0].cp_id;
+    if (exists.rows.length === 1) {
+        return true;
+    } else if (exists.rows.length === 0) {
+        return false;
+    } else {
+        throw "Too many rows were discovered in parts. Check database for duplicates"
+    };
+};
+
+exports.partPropertyExists = async function (cp_id, prop_id) {
+    const exists = await database.query(
+        `SELECT * FROM namegen.part_properties
+         JOIN namegen.collection_parts USING(cp_id)
+         JOIN namegen.properties USING(prop_id)
+         WHERE cp_id = '${cp_id}'
+           AND prop_id = '${prop_id}';`);
+
+    if (exists.rows.length === 1) {
+        return true;
+    } else if (exists.rows.length === 0) {
+        return false;
+    } else {
+        throw "Too many rows were discovered in parts. Check database for duplicates"
+    };
+};
+
+exports.getPartID = async function (part, category) {
+    const res = await database.query(
+        `SELECT part_id FROM namegen.parts
+         WHERE part = '${part}'
+         AND category = '${category}';`);
+
+    if (res.rows.length === 1) {
+        return res.rows[0].part_id;
+    } else {
+        return undefined;
+    };
+};
+
+exports.getCollectionID = async function (collection) {
+    const res = await database.query(
+        `SELECT col_id FROM namegen.collections
+         WHERE collection='${collection}';`);
+        
+    if (res.rows.length === 1) {
+        return res.rows[0].col_id;
+    } else {
+        return undefined;
+    };
+};
+
+exports.getPropertyID = async function (property) {
+    const res = await database.query(
+        `SELECT prop_id FROM namegen.properties
+         WHERE property='${property}';`);
+        
+    if (res.rows.length === 1) {
+        return res.rows[0].prop_id;
+    } else {
+        return undefined;
+    };
+};
+
+exports.getCollectionPartID = async function (part, category, collection) {
+    const res = await database.query(
+        `SELECT cp_id FROM namegen.collection_parts
+         JOIN namegen.collections USING(col_id)
+         JOIN namegen.parts USING(part_id)
+         WHERE part = '${part}'
+           AND category = '${category}'
+           AND collection = '${collection}';`);
+
+    if (res.rows.length === 1) {
+        return res.rows[0].cp_id;
     } else {
         return undefined;
     };
