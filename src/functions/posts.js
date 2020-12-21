@@ -1,5 +1,5 @@
 const database = require('../database/database');
-const selects = require('../queries/selects');
+const selects = require('../queries/selects/getIDs');
 const inserts = require('../queries/inserts');
 
 // should only accept a part, category, and collection

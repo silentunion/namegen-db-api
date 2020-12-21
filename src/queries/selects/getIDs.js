@@ -1,4 +1,4 @@
-const database = require('../database/database');
+const database = require('../../database/database');
 
 exports.getPartIDFromPart = async function (part, category=false) {
     let res;  
@@ -130,7 +130,7 @@ exports.getPSIDFromIDs = async function (cp_id) {
     } else {
         throw "Too many rows were discovered in parts. Check database for duplicates"
     };
-}
+};
 
 exports.getPPIDFromIDs = async function (cp_id, prop_id) {
     const res = await database.query(
@@ -138,7 +138,7 @@ exports.getPPIDFromIDs = async function (cp_id, prop_id) {
          JOIN namegen.collection_parts USING(cp_id)
          JOIN namegen.properties USING(prop_id)
          WHERE cp_id = '${cp_id}'
-           AND prop_id = '${prop_id}';`);
+         AND prop_id = '${prop_id}';`);
 
     if (res.rows.length === 1) {
         return res.rows[0].pp_id;
