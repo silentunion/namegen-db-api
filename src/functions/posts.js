@@ -10,6 +10,12 @@ exports.insert_parts = async function (req) {
         let part, category, collection, properties, statistics;
         ({ part, category, collection, properties, statistics } = r);
 
+        console.log('part ', part);
+        console.log('category ', part);
+        console.log('collection ', collection);
+        console.log('properties ', properties);
+        console.log('statistics ', statistics);
+
         const part_exists = await selects.partExists(part, category);
         const part_exists_in_col = await selects.partExistsInCollection(part, category, collection);
 
@@ -28,6 +34,6 @@ exports.insert_parts = async function (req) {
             console.log("Applied properties to part");
         }
     };
-    const ack = 'woohoo'
+    const ack = 'hmmm'
     return ack;
 };
