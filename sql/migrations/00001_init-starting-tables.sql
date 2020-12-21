@@ -1,41 +1,11 @@
+CREATE TYPE namegen.enum_part_category
+AS ENUM('letter', 'cluster', 'syllable', 'stem', 'name');
+
 -- PARTS --
 CREATE TABLE namegen.parts (
-    part_id SERIAL PRIMARY KEY
-);
-
-CREATE TABLE namegen.part_letters (
-    part_id INTEGER,
-    letter VARCHAR,
-    CONSTRAINT part_letters_pkey PRIMARY KEY (part_id),
-    CONSTRAINT part_letters_part_id_fkey FOREIGN KEY (part_id) REFERENCES namegen.parts (part_id) ON DELETE CASCADE
-);
-
-CREATE TABLE namegen.part_clusters (
-    part_id INTEGER,
-    cluster VARCHAR,
-    CONSTRAINT part_clusters_pkey PRIMARY KEY (part_id),
-    CONSTRAINT part_clusters_part_id_fkey FOREIGN KEY (part_id) REFERENCES namegen.parts (part_id) ON DELETE CASCADE
-);
-
-CREATE TABLE namegen.part_syllables (
-    part_id INTEGER,
-    syllable VARCHAR,
-    CONSTRAINT part_syllables_pkey PRIMARY KEY (part_id),
-    CONSTRAINT part_syllables_part_id_fkey FOREIGN KEY (part_id) REFERENCES namegen.parts (part_id) ON DELETE CASCADE
-);
-
-CREATE TABLE namegen.part_stems (
-    part_id INTEGER,
-    stem VARCHAR,
-    CONSTRAINT part_stems_pkey PRIMARY KEY (part_id),
-    CONSTRAINT part_stems_part_id_fkey FOREIGN KEY (part_id) REFERENCES namegen.parts (part_id) ON DELETE CASCADE
-);
-
-CREATE TABLE namegen.part_names (
-    part_id INTEGER,
-    name VARCHAR,
-    CONSTRAINT part_names_pkey PRIMARY KEY (part_id),
-    CONSTRAINT part_names_part_id_fkey FOREIGN KEY (part_id) REFERENCES namegen.parts (part_id) ON DELETE CASCADE
+    part_id SERIAL PRIMARY KEY,
+    part VARCHAR,
+    category namegen.enum_part_category
 );
 
 -- COLLECTIONS --
