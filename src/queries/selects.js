@@ -24,10 +24,11 @@ exports.partExists = async function (part, category=false) {
     };
 };
 
-exports.getPartID = async function (part_name) {
+exports.getPartID = async function (part_name, category) {
     const part = await database.query(
         `SELECT part_id FROM namegen.parts
-         WHERE part = '${part_name}';`);
+         WHERE part = '${part_name}'
+         AND category = '${category}';`);
 
     if (part.rows.length === 1) {
         return part.rows[0].part_id;
