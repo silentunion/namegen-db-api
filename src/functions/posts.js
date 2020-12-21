@@ -16,7 +16,7 @@ exports.insert_parts = async function (req) {
         console.log('properties ', properties);
         console.log('statistics ', statistics);
 
-        const part_exists = await selects.partExists(part, category);
+        const part_exists = await selects.getPartID(part, category);
         const part_exists_in_col = await selects.partExistsInCollection(part, category, collection);
 
         if (!part_exists) {
