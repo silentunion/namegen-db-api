@@ -25,6 +25,22 @@ exports.add_part_to_collection = async function (part, category, collection) {
     return cp_id;
 };
 
+exports.apply_properties_to_part = async function (part, category, collection, properties) {
+    const cp_id = await selects.getCollectionPartID(part, category, collection);
+    
+    if (properties.length) {
+        for (property of properties) {
+            const prop_id = await selects.getPropertyID(property);
+
+            await database.query(`
+                INSERT INTO namegen.part_properties (cp_id, prop_id)
+                VALUES (${cp_id}, ${prop_id});`);
+        }
+
+        console.log('Properties applied');
+    };
+};
+
     // await database.query(`
     //     INSERT INTO namegen.part_categories (part_id, cat_id)
     //     VALUES(${part_id}, ${cat_id});`);
