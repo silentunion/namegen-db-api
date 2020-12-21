@@ -12,7 +12,7 @@ exports.insert_part = async function (part, category) {
     return part_id;
 };
 
-exports.add_part_to_category = async function (part, category, collection) {
+exports.add_part_to_collection = async function (part, category, collection) {
     const col_id = await selects.getCollectionID(collection);
     const part_id = await selects.getPartID(part, category);
 
@@ -48,16 +48,6 @@ exports.add_part_to_category = async function (part, category, collection) {
     //         };
     //     }
     // };
-
-
-exports.add_category_to_part = async function (new_part, category) {
-    const cat_id = await selects.getCategoryId(category);
-    const part_id = await selects.getPartID(new_part);
-
-    await database.query(
-        `INSERT INTO namegen.part_categories (part_id, cat_id)
-        VALUES(${part_id}, ${cat_id});`);
-};
 
 exports.insert_collection_parts = async function (collection_name, part_name) {
     const col_id = await selects.getCollectionID(collection_name);
