@@ -8,27 +8,20 @@ exports.insert_parts = async function (req) {
 
     for (r of req) {
         let part, category, collection;
-        ({ part, category, collection, properties } = r);
+        ({ part, category, collection } = r);
 
-        const part_exists = await selects.partExists(part);
+        const part_exists = await selects.partExists(part, category);
+        const part_exists_in_col = await selects.partExistsInCollection(part, category, collection);
 
-        console.log(part_exists);
+        if (!part_exists) {
+            await inserts.insert_part(part, category);
+            console.log("Added part")
+        }
 
-        // if (!part_exists) {
-        //     await inserts.insert_new_part(part, category, collection, properties);
-        //     console.log('New part inserted');
-
-        // } else {
-        //     const part_type_exists = await selects.partTypeExists(part, category);
-            
-        //     if (!part_type_exists) {
-        //         await inserts.add_category_to_part(part, category);
-        //         console.log('Existing part added to category');
-
-        //     } else {
-        //         console.log('Part already exists with category')
-        //     }
-        // };
+        if (!part_exists_in_col) {
+            await inserts.add_part_to_collection(part, category, collection)
+            console.log("Added to collection")
+        }
     };
     const ack = 'woohoo'
     return ack;
