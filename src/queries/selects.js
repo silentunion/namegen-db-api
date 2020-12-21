@@ -117,7 +117,7 @@ exports.getPPIDFromTables = async function(part, category, collection, property)
     };
 };
 
-exports.getPropertyIDFromIDs = async function (cp_id, prop_id) {
+exports.getPPIDFromIDs = async function (cp_id, prop_id) {
     const res = await database.query(
         `SELECT * FROM namegen.part_properties
          JOIN namegen.collection_parts USING(cp_id)
@@ -126,7 +126,7 @@ exports.getPropertyIDFromIDs = async function (cp_id, prop_id) {
            AND prop_id = '${prop_id}';`);
 
     if (res.rows.length === 1) {
-        return true;
+        return res.rows[0].pp_id;
     } else if (res.rows.length === 0) {
         return false;
     } else {
