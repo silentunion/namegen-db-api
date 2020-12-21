@@ -6,7 +6,7 @@ exports.insert_parts = async function (req) {
     var num_inserts = 0;
 
     for (r of req) {
-        let part, category, collection, properties;
+        let part, category, collection;
         ({ part, category, collection, properties } = r);
 
         const part_exists = await selects.partExists(part);
