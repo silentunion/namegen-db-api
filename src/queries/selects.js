@@ -45,9 +45,9 @@ exports.partExistsInCollection = async function (part, category, collection) {
 exports.partPropertyExists = async function (cp_id, prop_id) {
     const exists = await database.query(
         `SELECT * FROM namegen.part_properties
-         JOIN namegen.collection_parts USING(col_id)
+         JOIN namegen.collection_parts USING(cp_id)
          JOIN namegen.properties USING(prop_id)
-         WHERE cp_id = '${cd_id}'
+         WHERE cp_id = '${cp_id}'
            AND prop_id = '${prop_id}';`);
 
     if (exists.rows.length === 1) {

@@ -30,13 +30,14 @@ exports.apply_properties_to_part = async function (part, category, collection, p
     
     if (properties.length) {
         for (property of properties) {
-            const prop_id = await selects.getPropertyID(property);
+            let prop_id = await selects.getPropertyID(property);
+            let part_prop_exists = await selects.partPropertyExists(cp_id, prop_id);
 
-            await database.query(`
-                INSERT INTO namegen.part_properties (cp_id, prop_id)
-                VALUES (${cp_id}, ${prop_id});`);
+            if (!part_prop_exists) {
+                await database.query(`
+                    INSERT INTO namegen.part_properties (cp_id, prop_id)
+                    VALUES (${cp_id}, ${prop_id});`);
+            }
         }
-
-        console.log('Properties applied');
     };
 };
