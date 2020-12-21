@@ -117,9 +117,24 @@ exports.getPPIDFromTables = async function(part, category, collection, property)
     };
 };
 
+exports.getPSIDFromIDs = async function (cp_id) {
+    const res = await database.query(`
+        SELECT ps_id FROM namegen.part_statistics
+        JOIN namegen.collection_parts USING(cp_id)
+        WHERE cp_id = '${cp_id}';`);
+    
+    if (res.rows.length === 1) {
+        return res.rows[0].ps_id;
+    } else if (res.rows.length === 0) {
+        return false;
+    } else {
+        throw "Too many rows were discovered in parts. Check database for duplicates"
+    };
+}
+
 exports.getPPIDFromIDs = async function (cp_id, prop_id) {
     const res = await database.query(
-        `SELECT * FROM namegen.part_properties
+        `SELECT pp_id FROM namegen.part_properties
          JOIN namegen.collection_parts USING(cp_id)
          JOIN namegen.properties USING(prop_id)
          WHERE cp_id = '${cp_id}'
