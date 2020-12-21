@@ -1,5 +1,5 @@
 const database = require('../database/database');
-const selects = require('./selects');
+const selects = require('./selects/getIDs');
 
 // Inserts new part_id and new part
 exports.insert_part = async function (part, category) {
