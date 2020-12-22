@@ -27,10 +27,4 @@ router.get('/letters/freq', async ctx => {
     .then(c => c.rows)
     });
 
-router.post('/parts', bodyParser, async ctx => {
-    const ack = await posts.insert_parts(ctx.request.body);
-    ctx.body = ack;
-    });
-        
-
 module.exports = router;
