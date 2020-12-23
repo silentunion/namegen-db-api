@@ -2,7 +2,8 @@ const Router = require('koa-router');
 const bodyParser = require('koa-body')();
 
 const database = require('./../database/database');
-const posts = require('./../functions/posts')
+const jwt = require('./../middlewares/jwt');
+const posts = require('./../functions/posts');
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.get('/letters', async ctx => {
     .then(c => c.rows)
     });
 
-router.get('/letters/freq', async ctx => {
+router.get('/letters/freq', jwt, async ctx => {
     ctx.body = await database.query(
         `SELECT part, frequency, property
         FROM namegen.parts
