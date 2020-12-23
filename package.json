@@ -8,12 +8,12 @@
     "watch": "cross-env NODE_PATH=src nodemon node src/index.js"
   },
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "enforce-node-path": "^1.0.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
-    "koa-cors": "^0.0.16",
     "koa-morgan": "^1.0.1",
     "koa-response-time": "^2.1.0",
     "koa-router": "^10.0.0",
