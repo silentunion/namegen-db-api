@@ -1,5 +1,5 @@
 const database = require('../database/database');
-const selects = require('../queries/selects');
+const selects = require('../queries/selects/getIDs');
 const inserts = require('../queries/inserts');
 
 // should only accept a part, category, and collection
@@ -16,8 +16,8 @@ exports.insert_parts = async function (req) {
         console.log('properties ', properties);
         console.log('statistics ', statistics);
 
-        const part_exists = await selects.partExists(part, category);
-        const part_exists_in_col = await selects.partExistsInCollection(part, category, collection);
+        const part_exists = await selects.getPartIDFromPart(part, category);
+        const part_exists_in_col = await selects.getCPIDFromTables(part, category, collection);
 
         if (!part_exists) {
             await inserts.insert_part(part, category);
