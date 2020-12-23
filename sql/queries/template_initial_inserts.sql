@@ -41,8 +41,20 @@ INSERT INTO namegen.collections (lang_id, theme_id, collection)
         SELECT 1 FROM namegen.collections WHERE collection='None'
     );
 
-INSERT INTO namegen.properties (property)
-    SELECT 'is_vowel'
+INSERT INTO namegen.collections (lang_id, theme_id, collection)
+    SELECT 2, 1, 'English Basic'
     WHERE NOT EXISTS (
-        SELECT 1 FROM namegen.properties WHERE property='is_vowel'
+        SELECT 1 FROM namegen.collections WHERE collection='English Basic'
+    );
+
+INSERT INTO namegen.properties (property)
+    SELECT 'vowel'
+    WHERE NOT EXISTS (
+        SELECT 1 FROM namegen.properties WHERE property='vowel'
+    );
+
+INSERT INTO namegen.properties (property)
+    SELECT 'consonant'
+    WHERE NOT EXISTS (
+        SELECT 1 FROM namegen.properties WHERE property='vowel'
     );
