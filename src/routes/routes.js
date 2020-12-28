@@ -2,7 +2,9 @@ const Router = require('koa-router');
 const bodyParser = require('koa-body')();
 
 const database = require('./../database/database');
-const posts = require('./../functions/posts')
+const jwt = require('./../middlewares/jwt');
+const authenticate = require('./../middlewares/authenticate');
+const posts = require('./../functions/posts');
 
 const router = Router();
 
@@ -26,5 +28,9 @@ router.get('/letters/freq', async ctx => {
         WHERE collection='English Basic';`)
     .then(c => c.rows)
     });
+
+// router.post('/login', async ctx => {
+//     authenticate(this);
+// })
 
 module.exports = router;
