@@ -1,32 +1,39 @@
 const database = require('../database/database');
-const selects = require('../queries/selects');
+const selects = require('../queries/selects/getIDs');
 const inserts = require('../queries/inserts');
 
+// should only accept a part, category, and collection
 exports.insert_parts = async function (req) {    
     var num_inserts = 0;
 
     for (r of req) {
-        let part, category, collection;
-        ({ part, category, collection, properties } = r);
+        let part, category, collection, properties, statistics;
+        ({ part, category, collection, properties, statistics } = r);
 
-        const part_exists = await selects.partExists(part);
+        console.log('part ', part);
+        console.log('category ', part);
+        console.log('collection ', collection);
+        console.log('properties ', properties);
+        console.log('statistics ', statistics);
+
+        const part_exists = await selects.getPartIDFromPart(part, category);
+        const part_exists_in_col = await selects.getCPIDFromTables(part, category, collection);
 
         if (!part_exists) {
-            await inserts.insert_new_part(part, category, collection, properties);
-            console.log('New part inserted');
+            await inserts.insert_part(part, category);
+            console.log("Added part");
+        }
 
-        } else {
-            const part_type_exists = await selects.partTypeExists(part, category);
-            
-            if (!part_type_exists) {
-                await inserts.add_category_to_part(part, category);
-                console.log('Existing part added to category');
+        if (!part_exists_in_col) {
+            await inserts.add_part_to_collection(part, category, collection);
+            console.log("Added to collection");
+        }
 
-            } else {
-                console.log('Part already exists with category')
-            }
-        };
+        if (properties.length) {
+            await inserts.apply_properties_to_part(part, category, collection, properties);
+            console.log("Applied properties to part");
+        }
     };
-    const ack = 'woohoo'
+    const ack = 'hmmm'
     return ack;
 };

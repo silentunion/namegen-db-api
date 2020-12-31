@@ -2,7 +2,7 @@ const Koa = require('koa');
 const router = require('./../routes/routes');
 const ResponseTime = require('koa-response-time');
 const Morgan = require('koa-morgan');
-const cors = require('koa-cors');
+const cors = require('@koa/cors');
 
 const db = require('./../database/database');
 
