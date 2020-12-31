@@ -1,34 +1,39 @@
 const database = require('../database/database');
-const selects = require('../queries/selects');
+const selects = require('../queries/selects/getIDs');
 const inserts = require('../queries/inserts');
 
+// should only accept a part, category, and collection
 exports.insert_parts = async function (req) {    
     var num_inserts = 0;
 
     for (r of req) {
-        let new_part = r.new_part;
-        let part_type = r.part_type;
-        let part_table = 'part_' + part_type + 's';
+        let part, category, collection, properties, statistics;
+        ({ part, category, collection, properties, statistics } = r);
 
-        const part_exists = await selects.partExists(new_part);
+        console.log('part ', part);
+        console.log('category ', part);
+        console.log('collection ', collection);
+        console.log('properties ', properties);
+        console.log('statistics ', statistics);
 
-        // if part does not exist at all
-        if(!Array.isArray(part_exists) || !part_exists.length){
+        const part_exists = await selects.getPartIDFromPart(part, category);
+        const part_exists_in_col = await selects.getCPIDFromTables(part, category, collection);
 
-            await inserts.insert_new_part(new_part, part_type, part_table);
+        if (!part_exists) {
+            await inserts.insert_part(part, category);
+            console.log("Added part");
+        }
 
-        } else {
-            const part_type_exists = await selects.partTypeExists(new_part, part_type, part_table);
-            // if part exists but part type does not
-            if (!Array.isArray(part_type_exists) || !part_type_exists.length){
-                const part_id = part_type_exists[0].part_id
-                
-                await inserts.insert_part_type(part_id, new_part, part_type, part_table);
+        if (!part_exists_in_col) {
+            await inserts.add_part_to_collection(part, category, collection);
+            console.log("Added to collection");
+        }
 
-                console.log('Inserted new part');
-            };
-        };
-
-    const ack = 'woohoo'
+        if (properties.length) {
+            await inserts.apply_properties_to_part(part, category, collection, properties);
+            console.log("Applied properties to part");
+        }
+    };
+    const ack = 'hmmm'
     return ack;
-}};
+};

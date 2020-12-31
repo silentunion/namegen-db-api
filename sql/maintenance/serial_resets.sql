@@ -46,10 +46,3 @@ SELECT setval('namegen.part_properties_pp_id_seq',
                THEN 1
                ELSE (SELECT MAX(pp_id) FROM namegen.part_properties) + 1
                END), FALSE);
-
--- Table: PART_STATISTICS --
-SELECT setval('namegen.part_statistics_ps_id_seq',
-              (SELECT CASE WHEN (SELECT MAX(ps_id) FROM namegen.part_statistics) IS NULL
-               THEN 1
-               ELSE (SELECT MAX(ps_id) FROM namegen.part_statistics) + 1
-               END), FALSE);
