@@ -25,7 +25,21 @@ router.get('/letters/freq', async ctx => {
         JOIN namegen.part_properties USING(cp_id)
         JOIN namegen.properties USING(prop_id)
         JOIN namegen.part_statistics USING(cp_id)
-        WHERE collection='English Basic';`)
+        WHERE category='letters'
+          AND collection='English Basic';`)
+    .then(c => c.rows)
+    });
+
+router.get('/clusters', async ctx => {
+    ctx.body = await database.query(
+        `SELECT part, property
+        FROM namegen.parts
+        JOIN namegen.collection_parts USING(part_id)
+        JOIN namegen.collections USING(col_id)
+        JOIN namegen.part_properties USING(cp_id)
+        JOIN namegen.properties USING(prop_id)
+        WHERE category='clusters'
+          AND collection='English Basic';`)
     .then(c => c.rows)
     });
 

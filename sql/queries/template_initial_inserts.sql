@@ -56,5 +56,5 @@ INSERT INTO namegen.properties (property)
 INSERT INTO namegen.properties (property)
     SELECT 'consonant'
     WHERE NOT EXISTS (
-        SELECT 1 FROM namegen.properties WHERE property='vowel'
+        SELECT 1 FROM namegen.properties WHERE property='consonant'
     );
