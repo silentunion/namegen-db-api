@@ -47,14 +47,16 @@ INSERT INTO namegen.collections (lang_id, theme_id, collection)
         SELECT 1 FROM namegen.collections WHERE collection='English Basic'
     );
 
-INSERT INTO namegen.properties (property)
-    SELECT 'vowel'
+INSERT INTO namegen.properties (property, location)
+    SELECT 'vowel', 'Any'
     WHERE NOT EXISTS (
         SELECT 1 FROM namegen.properties WHERE property='vowel'
+                                           AND location='Any'
     );
 
-INSERT INTO namegen.properties (property)
-    SELECT 'consonant'
+INSERT INTO namegen.properties (property, location)
+    SELECT 'consonant', 'Any'
     WHERE NOT EXISTS (
         SELECT 1 FROM namegen.properties WHERE property='consonant'
+                                           AND location='Any'
     );
