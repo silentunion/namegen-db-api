@@ -48,6 +48,13 @@ INSERT INTO namegen.collections (lang_id, theme_id, collection)
     );
 
 INSERT INTO namegen.properties (property, location)
+    SELECT 'None', 'Any'
+    WHERE NOT EXISTS (
+        SELECT 1 FROM namegen.properties WHERE property='None'
+                                           AND location='Any'
+    );
+
+INSERT INTO namegen.properties (property, location)
     SELECT 'vowel', 'Any'
     WHERE NOT EXISTS (
         SELECT 1 FROM namegen.properties WHERE property='vowel'
