@@ -18,28 +18,33 @@ router.get('/letters', async ctx => {
 
 router.get('/letters/freq', async ctx => {
     ctx.body = await database.query(
-        `SELECT part, frequency, property
+        `SELECT part, frequency, property, location
         FROM namegen.parts
         JOIN namegen.collection_parts USING(part_id)
         JOIN namegen.collections USING(col_id)
+        JOIN namegen.languages USING(lang_id)
+        JOIN namegen.themes USING(theme_id)
         JOIN namegen.part_properties USING(cp_id)
         JOIN namegen.properties USING(prop_id)
-        JOIN namegen.part_statistics USING(cp_id)
         WHERE category='letters'
-          AND collection='English Basic';`)
+          AND language='English US'
+          AND theme='Top 3000 Words';`)
     .then(c => c.rows)
     });
 
-router.get('/clusters', async ctx => {
+router.get('/clusters/freq', async ctx => {
     ctx.body = await database.query(
-        `SELECT part, property
+        `SELECT part, frequency, property, location
         FROM namegen.parts
         JOIN namegen.collection_parts USING(part_id)
         JOIN namegen.collections USING(col_id)
+        JOIN namegen.languages USING(lang_id)
+        JOIN namegen.themes USING(theme_id)
         JOIN namegen.part_properties USING(cp_id)
         JOIN namegen.properties USING(prop_id)
         WHERE category='clusters'
-          AND collection='English Basic';`)
+          AND language='English US'
+          AND theme='Top 3000 Words';`)
     .then(c => c.rows)
     });
 
